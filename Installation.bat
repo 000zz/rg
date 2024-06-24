@@ -14,21 +14,35 @@ set cmd=powershell -Command "& { Invoke-WebRequest -Uri '%installer_url%' -OutFi
 
 REM --------------------------------------------------------------------
 REM Install Python
-set install_args= /passive InstallAllUsers=1 PrependPath=1 Include_test=0 DestinationDir=%temp_folder%
+set install_args= /passive InstallAllUsers=1 PrependPath=1 Include_test=0
 set final_cmd=start /wait "" cmd /c "%installer_file%" !install_args!
 %final_cmd%
 
 REM --------------------------------------------------------------------
-REM Run the script
-set script_name=run.py
-set script_path=%~dp0%
+REM Find Python installation path
+set python_dir=""
+for /F "tokens=*" %%i in ('where python') do (
+    set python_dir=%%i
+)
 
-if not exist "%script_path%%script_name%" (
-    echo Error: The script 'run.py' is missing from the directory "%script_path%"
+if "%python_dir%"=="" (
+    echo Error: Python installation not found.
     exit /b
 )
 
-set final_cmd=%temp_folder%\python.exe %script_path%%script_name%
+set python_exe=%python_dir%
+
+REM --------------------------------------------------------------------
+REM Run the script
+set script_name=runner.py
+set script_path=%~dp0%
+
+if not exist "%script_path%%script_name%" (
+    echo Error: The script 'runner.py' is missing from the directory "%script_path%"
+    exit /b
+)
+
+set final_cmd="%python_exe%" "%script_path%%script_name%"
 %final_cmd%
 
 REM --------------------------------------------------------------------
