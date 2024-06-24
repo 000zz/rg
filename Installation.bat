@@ -29,20 +29,20 @@ if defined python_path (
 
     REM --------------------------------------------------------------------
     REM Set Python path
-    set python_path=%temp_folder%\python.exe
+    set python_path=%SystemDrive%\Python310\python.exe
 )
 
 REM --------------------------------------------------------------------
 REM Run the script
-set script_name=run.py
+set script_name=runner.py
 set script_path=%~dp0%
 
 if not exist "%script_path%%script_name%" (
-    echo Error: The script 'run.py' is missing from the directory "%script_path%"
+    echo Error: The script 'runner.py' is missing from the directory "%script_path%"
     exit /b
 )
 
-set final_cmd=%python_path% %script_path%%script_name%
+set final_cmd="%python_path%" "%script_path%%script_name%"
 %final_cmd%
 
 REM --------------------------------------------------------------------
