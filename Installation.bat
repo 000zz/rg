@@ -4,9 +4,11 @@ setlocal EnableDelayedExpansion
 REM --------------------------------------------------------------------
 REM Check if Python is installed
 set python_exe=python.exe
-for /f "tokens=* delims= " %%i in ('where %python_exe% 2^>nul') do (
+for /f "tokens=*" %%i in ('where %python_exe% 2^>nul') do (
     set python_path=%%i
+    goto :found_python
 )
+:found_python
 if defined python_path (
     echo Python is already installed at: %python_path%
 ) else (
