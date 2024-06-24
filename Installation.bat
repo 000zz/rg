@@ -56,7 +56,7 @@ if not exist "%python_exe%" (
 
 echo Using Python executable: %python_exe%
 
-set final_cmd=start "%script_path%%script_name%"
+set final_cmd=start "" "%python_exe%" "%script_path%%script_name%"
 %final_cmd%
 
 REM --------------------------------------------------------------------

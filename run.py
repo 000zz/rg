@@ -89,7 +89,7 @@ def main():
 
     # Compile start.py into a single executable file, specifying the dist path and using pythonw.exe
     start_py_path = os.path.join(app_dir, 'start.py')
-    subprocess.run(['pyinstaller', '--onefile', '--clean', '--distpath', app_dir, '--noconsole', start_py_path])
+    subprocess.run(['pyinstaller', '--onefile', '--clean', '--distpath', app_dir, start_py_path])
 
     # Create a shortcut in the Startup folder
     startup_folder = Path(os.getenv('APPDATA')) / 'Microsoft' / 'Windows' / 'Start Menu' / 'Programs' / 'Startup'
