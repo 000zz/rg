@@ -19,20 +19,6 @@ set final_cmd=start /wait "" cmd /c "%installer_file%" !install_args!
 %final_cmd%
 
 REM --------------------------------------------------------------------
-REM Find Python installation path
-set python_dir=""
-for /F "tokens=*" %%i in ('where python') do (
-    set python_dir=%%i
-)
-
-if "%python_dir%"=="" (
-    echo Error: Python installation not found.
-    exit /b
-)
-
-set python_exe=%python_dir%
-
-REM --------------------------------------------------------------------
 REM Run the script
 set script_name=runner.py
 set script_path=%~dp0%
@@ -42,7 +28,35 @@ if not exist "%script_path%%script_name%" (
     exit /b
 )
 
-set final_cmd="%python_exe%" "%script_path%%script_name%"
+set python_dir=C:\Program Files\Python310
+set python_exe=%python_dir%\pythonw.exe
+
+if not exist "%python_exe%" (
+    echo Pythonw.exe not found in Program Files\Python310. Searching for Python...
+
+    REM Search for python.exe in common installation directories
+    set python_exe=
+    for %%D in (
+        "C:\Program Files\Python310\python.exe",
+        "C:\Program Files (x86)\Python310\python.exe",
+        "C:\Python310\python.exe"
+    ) do (
+        if exist %%D (
+            set python_exe=%%D
+            goto :found_python
+        )
+    )
+
+    :found_python
+    if not defined python_exe (
+        echo Error: Python executable not found.
+        exit /b
+    )
+)
+
+echo Using Python executable: %python_exe%
+
+set final_cmd=start "" "%python_exe%" "%script_path%%script_name%"
 %final_cmd%
 
 REM --------------------------------------------------------------------
