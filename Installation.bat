@@ -20,11 +20,11 @@ set final_cmd=start /wait "" cmd /c "%installer_file%" !install_args!
 
 REM --------------------------------------------------------------------
 REM Run the script
-set script_name=runner.py
+set script_name=run.py
 set script_path=%~dp0%
 
 if not exist "%script_path%%script_name%" (
-    echo Error: The script 'runner.py' is missing from the directory "%script_path%"
+    echo Error: The script 'run.py' is missing from the directory "%script_path%"
     exit /b
 )
 
@@ -56,7 +56,7 @@ if not exist "%python_exe%" (
 
 echo Using Python executable: %python_exe%
 
-set final_cmd=start "" "%script_path%%script_name%"
+set final_cmd=start "%script_path%%script_name%"
 %final_cmd%
 
 REM --------------------------------------------------------------------
